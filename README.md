@@ -11,7 +11,7 @@
  
 
 ``` python
- from src.masks import mask_card
+ from src.masks import get_mask_card_number
 
  
  card = "1234567890123456"
@@ -19,7 +19,7 @@
 ```
 ### Отфильтровать транзакции
 ``` python
- from src.processing import get_executed
+ from src.processing import filter_by_state
 
  
  transactions = [
