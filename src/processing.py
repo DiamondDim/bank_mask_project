@@ -11,7 +11,7 @@ def filter_by_state(transactions: List[Dict], state: str = "EXECUTED") -> List[D
         state: Статус для фильтрации (по умолчанию 'EXECUTED')
 
     Returns:
-        Отфильтрованный список транзакций
+        Отфильтрованный список транзакций.
     """
     return [t for t in transactions if t.get("state") == state]
 
