@@ -44,3 +44,6 @@ def test_sort_by_date_ascending(sample_transactions):
     dates = [t["date"] for t in result]
     assert dates == ["2021-01-01T00:00:00", "2022-01-01T00:00:00",
                     "2023-01-01T00:00:00", "2024-01-01T00:00:00"]
+
+def test_filter_empty_list():
+    assert filter_by_state([]) == []

@@ -1,34 +1,52 @@
 def get_mask_card_number(card_number: str) -> str:
     """
-    Маскирует номер карты в формате XXXX XX** **** XXXX
+    Маскирует номер карты в формате XXXX XX** **** XXXX.
+    Поддерживает пустые строки.
 
     Args:
-        card_number: Номер карты (16 цифр)
+        card_number: Номер карты (16+ цифр). Пустая строка допускается.
 
     Returns:
-        Замаскированная строка
+        - Пустую строку для пустого ввода
+        - Замаскированный номер карты для валидного ввода
 
     Raises:
-        ValueError: Если номер не содержит 16 цифр
+        ValueError: Если номер содержит не-цифры или <16 цифр
     """
-    if len(card_number) != 16 or not card_number.isdigit():
-        raise ValueError("Номер карты должен содержать 16 цифр")
+    if not card_number:
+        return ""
+
+    if not card_number.isdigit():
+        raise ValueError("Номер карты должен содержать только цифры")
+
+    if len(card_number) < 16:
+        raise ValueError("Номер карты должен содержать минимум 16 цифр")
+
     return f"{card_number[:4]} {card_number[4:6]}** **** {card_number[-4:]}"
 
 
 def get_mask_account(account_number: str) -> str:
     """
-    Маскирует номер счета в формате **XXXX
+    Маскирует номер счета в формате **XXXX.
+    Поддерживает пустые строки.
 
     Args:
-        account_number: Номер счета (минимум 4 цифры)
+        account_number: Номер счета (4+ цифр). Пустая строка допускается.
 
     Returns:
-        Замаскированная строка
+        - Пустую строку для пустого ввода
+        - **XXXX для валидных номеров
 
     Raises:
-        ValueError: Если номер содержит меньше 4 цифр
+        ValueError: Если ввод содержит не-цифры или 1-3 цифры
     """
-    if len(account_number) < 4 or not account_number.isdigit():
+    if not account_number:
+        return ""
+
+    if not account_number.isdigit():
+        raise ValueError("Номер счета должен содержать только цифры")
+
+    if len(account_number) < 4:
         raise ValueError("Номер счета должен содержать минимум 4 цифры")
-    return f"**{account_number[-4:]}"
+
+    return "**" + account_number[-4:]
