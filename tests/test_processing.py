@@ -1,35 +1,86 @@
+import pytest
 from typing import List, Dict, Union
 from src.processing import filter_by_state, sort_by_date
 
-SAMPLE_DATA: List[Dict[str, Union[str, int]]] = [
-    {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-    {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-    {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-    {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"}
-]
+
+@pytest.fixture
+def sample_transactions() -> List[Dict[str, Union[str, int]]]:
+    """Фикстура возвращает тестовый набор транзакций.
+
+    Returns:
+        Список словарей с транзакциями, где:
+        - id (int): идентификатор транзакции
+        - state (str): статус транзакции
+        - date (str): дата в ISO формате
+    """
+    return [
+        {"id": 1, "state": "EXECUTED", "date": "2023-01-01T00:00:00"},
+        {"id": 2, "state": "CANCELED", "date": "2024-01-01T00:00:00"},
+        {"id": 3, "state": "EXECUTED", "date": "2022-01-01T00:00:00"},
+        {"id": 4, "state": "PENDING", "date": "2021-01-01T00:00:00"}
+    ]
 
 
-def test_filter_by_state() -> None:
-    """Тестирование фильтрации транзакций по статусу."""
-    # Тестируем фильтрацию по EXECUTED
-    result: List[Dict[str, Union[str, int]]] = filter_by_state(SAMPLE_DATA)
-    assert len(result) == 2
-    assert all(t["state"] == "EXECUTED" for t in result)
-
-    # Тестируем фильтрацию по CANCELED
-    result = filter_by_state(SAMPLE_DATA, "CANCELED")
-    assert len(result) == 2
-    assert all(t["state"] == "CANCELED" for t in result)
+@pytest.fixture
+def executed_transactions() -> List[Dict[str, Union[str, int]]]:
+    """Фикстура возвращает только выполненные транзакции."""
+    return [
+        {"id": 1, "state": "EXECUTED", "date": "2023-01-01T00:00:00"},
+        {"id": 3, "state": "EXECUTED", "date": "2022-01-01T00:00:00"}
+    ]
 
 
-def test_sort_by_date() -> None:
-    """Тестирование сортировки транзакций по дате."""
-    # Тестируем сортировку по убыванию (по умолчанию)
-    result: List[Dict[str, Union[str, int]]] = sort_by_date(SAMPLE_DATA)
-    assert result[0]["date"] == "2019-07-03T18:35:29.512364"
-    assert result[-1]["date"] == "2018-06-30T02:08:58.425572"
+@pytest.fixture
+def canceled_transactions() -> List[Dict[str, Union[str, int]]]:
+    """Фикстура возвращает только отмененные транзакции."""
+    return [{"id": 2, "state": "CANCELED", "date": "2024-01-01T00:00:00"}]
 
-    # Тестируем сортировку по возрастанию
-    result = sort_by_date(SAMPLE_DATA, reverse=False)
-    assert result[0]["date"] == "2018-06-30T02:08:58.425572"
-    assert result[-1]["date"] == "2019-07-03T18:35:29.512364"
+
+# Остальные функции остаются без изменений, как в предыдущем исправлении
+def test_filter_by_state_default(
+        sample_transactions: List[Dict[str, Union[str, int]]],
+        executed_transactions: List[Dict[str, Union[str, int]]]
+) -> None:
+    """Тестирует фильтрацию по умолчанию (EXECUTED)."""
+    result = filter_by_state(sample_transactions)
+    assert result == executed_transactions
+
+
+def test_filter_by_state_executed(
+        sample_transactions: List[Dict[str, Union[str, int]]],
+        executed_transactions: List[Dict[str, Union[str, int]]]
+) -> None:
+    """Тестирует явную фильтрацию по статусу EXECUTED."""
+    result = filter_by_state(sample_transactions, "EXECUTED")
+    assert result == executed_transactions
+
+
+def test_filter_by_state_canceled(
+        sample_transactions: List[Dict[str, Union[str, int]]],
+        canceled_transactions: List[Dict[str, Union[str, int]]]
+) -> None:
+    """Тестирует фильтрацию по статусу CANCELED."""
+    result = filter_by_state(sample_transactions, "CANCELED")
+    assert result == canceled_transactions
+
+
+def test_sort_by_date_descending(sample_transactions: List[Dict[str, Union[str, int]]]) -> None:
+    """Тестирует сортировку по убыванию даты (новые сначала)."""
+    result = sort_by_date(sample_transactions)
+    assert [t["date"] for t in result] == [
+        "2024-01-01T00:00:00",
+        "2023-01-01T00:00:00",
+        "2022-01-01T00:00:00",
+        "2021-01-01T00:00:00"
+    ]
+
+
+def test_sort_by_date_ascending(sample_transactions: List[Dict[str, Union[str, int]]]) -> None:
+    """Тестирует сортировку по возрастанию даты (старые сначала)."""
+    result = sort_by_date(sample_transactions, reverse=False)
+    assert [t["date"] for t in result] == [
+        "2021-01-01T00:00:00",
+        "2022-01-01T00:00:00",
+        "2023-01-01T00:00:00",
+        "2024-01-01T00:00:00"
+    ]
