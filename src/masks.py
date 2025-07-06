@@ -6,7 +6,10 @@ def get_mask_card_number(card_number: str) -> str:
         card_number: Номер карты (16 цифр)
 
     Returns:
-        Замаскированная строка (или пустая строка для пустого ввода)
+        Замаскированная строка (пустая строка для пустого ввода)
+
+    Raises:
+        ValueError: Если номер не содержит 16 цифр
     """
     if not card_number:
         return ""
@@ -23,7 +26,10 @@ def get_mask_account(account_number: str) -> str:
         account_number: Номер счета (минимум 4 цифры)
 
     Returns:
-        Замаскированная строка (или пустая строка для пустого ввода)
+        Замаскированная строка (пустая строка для пустого ввода)
+
+    Raises:
+        ValueError: Если номер содержит меньше 4 цифр
     """
     if not account_number:
         return ""
