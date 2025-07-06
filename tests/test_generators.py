@@ -5,6 +5,7 @@ from src.generators import filter_by_currency, transaction_descriptions, card_nu
 
 @pytest.fixture
 def sample_transactions() -> List[Dict[str, Any]]:
+    """Фикстура с тестовыми данными транзакций."""
     return [
         {
             "id": 1,
@@ -36,8 +37,9 @@ def sample_transactions() -> List[Dict[str, Any]]:
     ]
 
 
-def test_filter_by_currency(sample_transactions: List[Dict[str, Any]]):
-    # Тест фильтрации USD-транзакций
+def test_filter_by_currency(sample_transactions: List[Dict[str, Any]]) -> None:
+    """Тестирует фильтрацию транзакций по валюте."""
+    # Тест USD-транзакций
     usd_transactions = list(filter_by_currency(sample_transactions, "USD"))
     assert len(usd_transactions) == 2
     assert all(tx["operationAmount"]["currency"]["code"] == "USD" for tx in usd_transactions)
@@ -46,8 +48,8 @@ def test_filter_by_currency(sample_transactions: List[Dict[str, Any]]):
     assert len(list(filter_by_currency(sample_transactions, "GBR"))) == 0
 
 
-def test_transaction_descriptions(sample_transactions: List[Dict[str, Any]]):
-    # Тест получения описаний
+def test_transaction_descriptions(sample_transactions: List[Dict[str, Any]]) -> None:
+    """Тестирует получение описаний транзакций."""
     descriptions = list(transaction_descriptions(sample_transactions))
     assert descriptions == [
         "Перевод организации",
@@ -73,6 +75,24 @@ def test_transaction_descriptions(sample_transactions: List[Dict[str, Any]]):
         "9999 9999 9999 9999"
     ])
 ])
-def test_card_number_generator(start: int, end: int, expected: List[str]):
-    # Тест генератора номеров карт
+def test_card_number_generator(start: int, end: int, expected: List[str]) -> None:
+    """Тестирует генератор номеров карт."""
     assert list(card_number_generator(start, end)) == expected
+
+
+def test_filter_by_currency_edge_cases() -> None:
+    """Тестирует крайние случаи фильтрации."""
+    # Пустой список транзакций
+    assert len(list(filter_by_currency([], "USD"))) == 0
+
+    # Некорректная структура данных
+    assert len(list(filter_by_currency([{"operationAmount": {}}], "USD"))) == 0
+
+
+def test_card_number_generator_edges() -> None:
+    """Тестирует граничные значения генератора карт."""
+    cards = list(card_number_generator(1, 2))
+    assert cards == ["0000 0000 0000 0001", "0000 0000 0000 0002"]
+
+    # Большой диапазон
+    assert len(list(card_number_generator(1, 100))) == 100
