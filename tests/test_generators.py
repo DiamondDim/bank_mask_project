@@ -5,123 +5,74 @@ from src.generators import filter_by_currency, transaction_descriptions, card_nu
 
 @pytest.fixture
 def sample_transactions() -> List[Dict[str, Any]]:
-    """
-    Фикстура предоставляет тестовые данные транзакций.
-
-    Returns:
-        Список тестовых транзакций в формате:
-        [
-            {
-                "id": int,
-                "operationAmount": {
-                    "currency": {"code": str}
-                },
-                "description": str
-            },
-            ...
-        ]
-    """
     return [
         {
             "id": 1,
             "operationAmount": {
+                "amount": "100.00",
                 "currency": {"code": "USD"}
             },
-            "description": "Transaction 1"
+            "description": "Перевод организации",
+            "state": "EXECUTED"
         },
         {
             "id": 2,
             "operationAmount": {
+                "amount": "200.00",
                 "currency": {"code": "EUR"}
             },
-            "description": "Transaction 2"
+            "description": "Перевод со счета на счет",
+            "state": "EXECUTED"
         },
         {
             "id": 3,
             "operationAmount": {
+                "amount": "300.00",
                 "currency": {"code": "USD"}
             },
-            "description": "Transaction 3"
+            "description": "Перевод с карты на карту",
+            "state": "CANCELED"
         }
     ]
 
 
-def test_filter_by_currency(sample_transactions: List[Dict[str, Any]]) -> None:
-    """
-    Тестирует фильтрацию транзакций по валюте.
+def test_filter_by_currency(sample_transactions: List[Dict[str, Any]]):
+    # Тест фильтрации USD-транзакций
+    usd_transactions = list(filter_by_currency(sample_transactions, "USD"))
+    assert len(usd_transactions) == 2
+    assert all(tx["operationAmount"]["currency"]["code"] == "USD" for tx in usd_transactions)
 
-    Проверяет:
-    1. Корректность фильтрации транзакций
-    2. Порядок возвращаемых транзакций
-    3. Завершение итератора при отсутствии данных
-
-    Args:
-        sample_transactions: Фикстура с тестовыми данными
-    """
-    usd_transactions = filter_by_currency(sample_transactions, "USD")
-
-    # Проверка первой USD-транзакции
-    first_transaction = next(usd_transactions)
-    assert first_transaction["id"] == 1
-    assert first_transaction["operationAmount"]["currency"]["code"] == "USD"
-
-    # Проверка второй USD-транзакции
-    second_transaction = next(usd_transactions)
-    assert second_transaction["id"] == 3
-
-    # Проверка завершения итератора
-    with pytest.raises(StopIteration):
-        next(usd_transactions)
+    # Тест пустого результата
+    assert len(list(filter_by_currency(sample_transactions, "GBR"))) == 0
 
 
-def test_transaction_descriptions(sample_transactions: List[Dict[str, Any]]) -> None:
-    """
-    Тестирует генератор описаний транзакций.
+def test_transaction_descriptions(sample_transactions: List[Dict[str, Any]]):
+    # Тест получения описаний
+    descriptions = list(transaction_descriptions(sample_transactions))
+    assert descriptions == [
+        "Перевод организации",
+        "Перевод со счета на счет",
+        "Перевод с карты на карту"
+    ]
 
-    Проверяет:
-    1. Корректность возвращаемых описаний
-    2. Порядок следования описаний
-
-    Args:
-        sample_transactions: Фикстура с тестовыми данными
-    """
-    descriptions = transaction_descriptions(sample_transactions)
-
-    assert next(descriptions) == "Transaction 1"
-    assert next(descriptions) == "Transaction 2"
-    assert next(descriptions) == "Transaction 3"
-
-    # Проверка завершения итератора
-    with pytest.raises(StopIteration):
-        next(descriptions)
+    # Тест пустого списка
+    assert len(list(transaction_descriptions([]))) == 0
 
 
-@pytest.mark.parametrize(
-    "start,end,expected",
-    [
-        (1, 1, ["0000 0000 0000 0001"]),
-        (1, 3, [
-            "0000 0000 0000 0001",
-            "0000 0000 0000 0002",
-            "0000 0000 0000 0003"
-        ]),
-    ],
-    ids=["single_card", "multiple_cards"]
-)
-def test_card_number_generator(start: int, end: int, expected: List[str]) -> None:
-    """
-    Параметризованный тест генератора номеров карт.
-
-    Проверяет:
-    1. Корректность генерации номеров
-    2. Форматирование вывода
-    3. Обработку диапазонов
-
-    Args:
-        start: Начальный номер диапазона
-        end: Конечный номер диапазона
-        expected: Ожидаемый список номеров карт
-    """
-    result = list(card_number_generator(start, end))
-    assert result == expected
-    assert all(len(num) == 19 for num in result)  # Проверка формата
+@pytest.mark.parametrize("start,end,expected", [
+    (1, 1, ["0000 0000 0000 0001"]),
+    (1, 3, [
+        "0000 0000 0000 0001",
+        "0000 0000 0000 0002",
+        "0000 0000 0000 0003"
+    ]),
+    (9999999999999996, 9999999999999999, [
+        "9999 9999 9999 9996",
+        "9999 9999 9999 9997",
+        "9999 9999 9999 9998",
+        "9999 9999 9999 9999"
+    ])
+])
+def test_card_number_generator(start: int, end: int, expected: List[str]):
+    # Тест генератора номеров карт
+    assert list(card_number_generator(start, end)) == expected

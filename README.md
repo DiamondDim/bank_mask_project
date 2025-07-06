@@ -39,45 +39,36 @@
 Карта **** **** **** 5678, Счет **4567
 ```
 
-## Генераторы данных
+## 🛠 Генераторы данных
 
-Модуль `generators` предоставляет инструменты для работы с транзакциями:
+Модуль `generators` предоставляет инструменты для обработки банковских транзакций:
 
-### Фильтрация по валюте
-```python
+### 1. Фильтрация транзакций по валюте
+``` python
 from src.generators import filter_by_currency
 
-def process_transactions(transactions):
-    """Пример использования фильтрации"""
-    usd_transactions = filter_by_currency(transactions, "USD")
-    first_usd = next(usd_transactions, None)
-    if first_usd:
-        print(f"Первая USD-транзакция: {first_usd['id']}")
+transactions = [...]  # Ваши транзакции
+usd_transactions = filter_by_currency(transactions, "USD")
 
+# Получить первые 2 USD-транзакции
+for _ in range(2):
+    print(next(usd_transactions))
 ```
-
 ### Получение описаний
-```python
+``` python
 from src.generators import transaction_descriptions
 
-def print_descriptions(transactions):
-    """Пример вывода описаний"""
-    print("Операции:")
-    for desc in transaction_descriptions(transactions):
-        print(f"- {desc}")
-
+for desc in transaction_descriptions(transactions):
+    print(desc)  # Выводит описания по одной
 ```
 
 ### Генерация номеров карт
-```python
+``` python
 from src.generators import card_number_generator
 
-def generate_cards_example():
-    """Пример генерации номеров карт"""
-    print("Сгенерированные номера:")
-    for card in card_number_generator(1, 5):
-        print(card)
-
+# Сгенерировать номера с 1 по 5
+for card in card_number_generator(1, 5):
+    print(card)  # 0000 0000 0000 0001 ... 0000 0000 0000 0005
 ```
 
 #### MIT License. Свободное использование и модификация.
