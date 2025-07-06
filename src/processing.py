@@ -1,34 +1,33 @@
-from datetime import datetime
-from typing import List, Dict
+from typing import List, Dict, Any
 
 
-def filter_by_state(transactions: List[Dict], state: str = "EXECUTED") -> List[Dict]:
+def filter_by_state(
+        transactions: List[Dict[str, Any]], state: str
+) -> List[Dict[str, Any]]:
     """
-    Фильтрует транзакции по указанному статусу.
+    Фильтрует список транзакций по заданному статусу.
+    Игнорирует None и словари без поля 'state'.
 
-    Args:
-        transactions: Список словарей с транзакциями
-        state: Статус для фильтрации (по умолчанию 'EXECUTED')
-
-    Returns:
-        Отфильтрованный список транзакций.
+    :param transactions: Список транзакций (словарей)
+    :param state: Статус для фильтрации ("EXECUTED", "CANCELED" и т.д.)
+    :return: Отфильтрованный список транзакций
     """
-    return [t for t in transactions if t.get("state") == state]
+    return [
+        t for t in transactions
+        if isinstance(t, dict) and t.get("state") == state
+    ]
 
 
-def sort_by_date(transactions: List[Dict], reverse: bool = True) -> List[Dict]:
+def sort_by_date(transactions: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
-    Сортирует транзакции по дате.
+    Сортирует транзакции по дате (от новых к старым).
+    Игнорирует None и словари без поля 'date'.
 
-    Args:
-        transactions: Список словарей с транзакциями
-        reverse: Если True - сортировка по убыванию (новые сначала)
-
-    Returns:
-        Отсортированный список транзакций
+    :param transactions: Список транзакций (словарей)
+    :return: Отсортированный список транзакций
     """
-    return sorted(
-        transactions,
-        key=lambda x: datetime.fromisoformat(x["date"]),
-        reverse=reverse
-    )
+    valid_transactions = [
+        t for t in transactions
+        if isinstance(t, dict) and "date" in t
+    ]
+    return sorted(valid_transactions, key=lambda x: x["date"], reverse=True)

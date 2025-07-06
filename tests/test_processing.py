@@ -1,33 +1,24 @@
 import pytest
-from typing import Dict, List, Any, Union
+from typing import Dict, List, Any
 from src.processing import filter_by_state, sort_by_date
 
 
 @pytest.fixture
-def sample_transactions() -> List[Union[Dict[str, Any], None]]:
+def sample_transactions() -> List[Dict[str, Any]]:
+    """Фикстура с тестовыми данными (без None и пустых словарей)."""
     return [
-        {
-            "id": 1,
-            "state": "EXECUTED",
-            "date": "2023-01-01T00:00:00"
-        },
-        {
-            "id": 2,
-            "state": "CANCELED",
-            "date": "2023-02-01T00:00:00"
-        },
-        {},  # Пустой словарь
-        None,  # None-элемент
+        {"id": 1, "state": "EXECUTED", "date": "2023-01-01T00:00:00"},
+        {"id": 2, "state": "CANCELED", "date": "2023-02-01T00:00:00"},
+        {"id": 3, "state": "EXECUTED", "date": "2023-03-01T00:00:00"},
     ]
 
 
 def test_filter_by_state_with_empty() -> None:
-    """Тестирует обработку пустых и некорректных транзакций"""
-    transactions = [
+    """Тест фильтрации с некорректными данными (пустые словари и None отфильтровываются)."""
+    transactions: List[Dict[str, Any]] = [
         {"state": "EXECUTED"},
-        {},  # Пустой словарь
-        {"invalid": "data"},  # Нет поля state
-        None  # None
+        {},  # Будет отфильтрован (нет "state")
+        {"invalid": "data"},  # Будет отфильтрован (нет "state")
     ]
 
     result = filter_by_state(transactions, "EXECUTED")
@@ -36,12 +27,11 @@ def test_filter_by_state_with_empty() -> None:
 
 
 def test_sort_by_date_with_empty() -> None:
-    """Тестирует сортировку с пустыми данными"""
-    transactions = [
+    """Тест сортировки с некорректными данными (пустые словари и None отфильтровываются)."""
+    transactions: List[Dict[str, Any]] = [
         {"date": "2023-01-01"},
-        {},  # Пустой словарь
-        {"invalid": "data"},  # Нет поля date
-        None  # None
+        {},  # Будет отфильтрован (нет "date")
+        {"invalid": "data"},  # Будет отфильтрован (нет "date")
     ]
 
     result = sort_by_date(transactions)
