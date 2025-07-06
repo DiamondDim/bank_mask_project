@@ -39,6 +39,47 @@
 Карта **** **** **** 5678, Счет **4567
 ```
 
+## Генераторы данных
+
+Модуль `generators` предоставляет инструменты для работы с транзакциями:
+
+### Фильтрация по валюте
+```python
+from src.generators import filter_by_currency
+
+def process_transactions(transactions):
+    """Пример использования фильтрации"""
+    usd_transactions = filter_by_currency(transactions, "USD")
+    first_usd = next(usd_transactions, None)
+    if first_usd:
+        print(f"Первая USD-транзакция: {first_usd['id']}")
+
+```
+
+### Получение описаний
+```python
+from src.generators import transaction_descriptions
+
+def print_descriptions(transactions):
+    """Пример вывода описаний"""
+    print("Операции:")
+    for desc in transaction_descriptions(transactions):
+        print(f"- {desc}")
+
+```
+
+### Генерация номеров карт
+```python
+from src.generators import card_number_generator
+
+def generate_cards_example():
+    """Пример генерации номеров карт"""
+    print("Сгенерированные номера:")
+    for card in card_number_generator(1, 5):
+        print(card)
+
+```
+
 #### _Этот проект распространяется под лицензией MIT._
 MIT License - можно свободно использовать.
 

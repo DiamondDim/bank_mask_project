@@ -11,6 +11,7 @@ flake8 = "^7.2.0"
 isort = "^6.0.1"
 black = "^25.1.0"
 mypy = "^1.16.0"
+transactions = "^0.2.0"
 
 [tool.poetry.group.lint.dependencies]
 flake8 = "7.2.0"
