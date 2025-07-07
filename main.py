@@ -1,4 +1,4 @@
-from src.masks import get_mask_card_number, get_mask_account
+from src.masks import mask_card_number, mask_account_number
 from src.processing import filter_by_state, sort_by_date
 from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
 from src.widget import format_date
@@ -44,8 +44,8 @@ def main():
     print("\n1. Маскировка номеров:")
     card = "7000792289606361"
     account = "73654108430135874305"
-    print(f"Карта {card} -> {get_mask_card_number(card)}")
-    print(f"Счет {account} -> {get_mask_account(account)}")
+    print(f"Карта {card} -> {mask_card_number(card)}")
+    print(f"Счет {account} -> {mask_account_number(account)}")
 
     # 2. Фильтрация и сортировка транзакций
     print("\n2. Обработка транзакций:")
