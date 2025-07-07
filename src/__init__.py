@@ -1,15 +1,16 @@
-from .masks import get_mask_card_number, get_mask_account
-from .processing import filter_by_state, sort_by_date
+from .widget import mask_account_card, format_date
 from .generators import filter_by_currency, transaction_descriptions, card_number_generator
-from .widget import format_date
+from .masks import mask_card_number, mask_account_number
+from .processing import filter_by_state, sort_by_date
 
 __all__ = [
-    'get_mask_card_number',
-    'get_mask_account',
-    'filter_by_state',
-    'sort_by_date',
+    'mask_account_card',
+    'format_date',
     'filter_by_currency',
     'transaction_descriptions',
     'card_number_generator',
-    'format_date'
+    'mask_card_number',
+    'mask_account_number',
+    'filter_by_state',
+    'sort_by_date'
 ]

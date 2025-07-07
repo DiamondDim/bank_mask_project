@@ -1,33 +1,46 @@
 from typing import List, Dict, Any
+from datetime import datetime
 
 
-def filter_by_state(
-        transactions: List[Dict[str, Any]], state: str
-) -> List[Dict[str, Any]]:
+def filter_by_state(transactions: List[Dict[str, Any]], state: str) -> List[Dict[str, Any]]:
     """
-    Фильтрует список транзакций по заданному статусу.
-    Игнорирует None и словари без поля 'state'.
+    Фильтрует транзакции по указанному статусу.
 
-    :param transactions: Список транзакций (словарей)
-    :param state: Статус для фильтрации ("EXECUTED", "CANCELED" и т.д.)
-    :return: Отфильтрованный список транзакций
+    Args:
+        transactions: Список транзакций
+        state: Статус для фильтрации ("EXECUTED", "CANCELED" и т.д.)
+
+    Returns:
+        Отфильтрованный список транзакций
+
+    Examples:
+        >>> filter_by_state([{"state": "EXECUTED"}], "EXECUTED")
+        [{'state': 'EXECUTED'}]
     """
-    return [
-        t for t in transactions
-        if isinstance(t, dict) and t.get("state") == state
-    ]
+    return [t for t in transactions if isinstance(t, dict) and t.get('state') == state]
 
 
-def sort_by_date(transactions: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def sort_by_date(transactions: List[Dict[str, Any]], reverse: bool = True) -> List[Dict[str, Any]]:
     """
-    Сортирует транзакции по дате (от новых к старым).
-    Игнорирует None и словари без поля 'date'.
+    Сортирует транзакции по дате.
 
-    :param transactions: Список транзакций (словарей)
-    :return: Отсортированный список транзакций
+    Args:
+        transactions: Список транзакций
+        reverse: Сортировка по убыванию (True) или возрастанию (False)
+
+    Returns:
+        Отсортированный список транзакций
+
+    Examples:
+        >>> sort_by_date([{"date": "2023-01-01"}, {"date": "2023-01-02"}])
+        [{'date': '2023-01-02'}, {'date': '2023-01-01'}]
     """
-    valid_transactions = [
-        t for t in transactions
-        if isinstance(t, dict) and "date" in t
-    ]
-    return sorted(valid_transactions, key=lambda x: x["date"], reverse=True)
+
+    def get_date(transaction: Dict[str, Any]) -> str:
+        return transaction.get('date', '') if isinstance(transaction, dict) else ''
+
+    return sorted(
+        [t for t in transactions if 'date' in t],
+        key=lambda x: x['date'],
+        reverse=reverse
+    )
