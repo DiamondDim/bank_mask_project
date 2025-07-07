@@ -18,14 +18,20 @@ def test_format_date(date_str: str, expected: str) -> None:
     """Тестирует форматирование даты"""
     assert format_date(date_str) == expected
 
+@pytest.mark.parametrize("date_str, expected", [
+    ("2023-01-01", "01.01.2023"),
+    ("invalid", "Некорректная дата"),
+    (None, "Некорректная дата")
+])
+def test_format_date(date_str, expected):
+    assert format_date(date_str) == expected
+
 
 def test_format_date_invalid():
-    """Тест обработки некорректных дат"""
-    assert format_date("2023-13-01") == "Некорректная дата"  # Несуществующий месяц
-    assert format_date("not-a-date") == "Некорректная дата"  # Полностью невалидный формат
+    assert format_date("invalid-date") == "Некорректная дата"
+    assert format_date("2023-13-01") == "Некорректная дата"  # Несуществующая дата
 
 def test_format_date_edge_cases():
      # Тест на некорректные даты
     assert format_date("invalid") == "Некорректная дата"
     assert format_date("2023-02-30") == "Некорректная дата"  # Несуществующая дата
-

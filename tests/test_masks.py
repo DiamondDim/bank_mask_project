@@ -73,3 +73,10 @@ def test_mask_empty_input():
     """Тест обработки пустого ввода"""
     assert get_mask_card_number("") == ""
     assert get_mask_account("") == ""
+
+
+def test_mask_edge_cases():
+    with pytest.raises(ValueError):
+        get_mask_card_number("123")  # Слишком короткий номер
+    with pytest.raises(ValueError):
+        get_mask_account("abc")  # Не цифры

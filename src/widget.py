@@ -21,7 +21,11 @@ def format_date(date_str: str) -> str:
         Строка с датой в формате DD.MM.YYYY
     """
     date_obj = datetime.fromisoformat(date_str)
-    return date_obj.strftime("%d.%m.%Y")
+    try:
+        date_obj = datetime.fromisoformat(date_str)
+        return date_obj.strftime("%d.%m.%Y")
+    except ValueError:
+        return "Некорректная дата"
 
 
 def mask_account_card(account_info: str) -> str:

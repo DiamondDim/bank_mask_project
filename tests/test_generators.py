@@ -127,3 +127,9 @@ def test_filter_by_currency_edge_cases():
 
     # 3. Некорректный currency
     assert list(filter_by_currency([{"operationAmount": {"currency": "not-a-dict"}}], "USD")) == []
+
+
+def test_filter_by_currency_invalid_data():
+    assert list(filter_by_currency([None, "string"], "USD")) == []
+    assert list(filter_by_currency([{"operationAmount": None}], "USD")) == []
+    assert list(filter_by_currency([{"operationAmount": {}}], "USD")) == []
