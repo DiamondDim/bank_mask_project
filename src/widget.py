@@ -10,7 +10,15 @@ def mask_account_card(data: str) -> str:
             f"{get_mask_card_number(data.split()[-1])}")
 
 
-def get_date(iso_date: str) -> str:
-    """Преобразует дату из ISO формата в 'ДД.ММ.ГГГГ'."""
+def format_date(date_str: str) -> str:
+    """
+    Форматирует дату из ISO формата в DD.MM.YYYY
 
-    return datetime.fromisoformat(iso_date).strftime("%d.%m.%Y")
+    Args:
+        date_str: Дата в формате ISO (YYYY-MM-DDTHH:MM:SS.ffffff)
+
+    Returns:
+        Строка с датой в формате DD.MM.YYYY
+    """
+    date_obj = datetime.fromisoformat(date_str)
+    return date_obj.strftime("%d.%m.%Y")
