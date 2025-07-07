@@ -62,3 +62,14 @@ def test_mask_account_format() -> None:
     assert masked.startswith("**")
     assert len(masked) == 6  # 2 звездочки + 4 цифры
     assert masked[2:].isdigit()
+
+
+def test_mask_account_invalid():
+    with pytest.raises(ValueError):
+        get_mask_account("123")  # Менее 4 цифр
+
+
+def test_mask_empty_input():
+    """Тест обработки пустого ввода"""
+    assert get_mask_card_number("") == ""
+    assert get_mask_account("") == ""

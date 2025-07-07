@@ -22,3 +22,41 @@ def format_date(date_str: str) -> str:
     """
     date_obj = datetime.fromisoformat(date_str)
     return date_obj.strftime("%d.%m.%Y")
+
+
+def mask_account_card(account_info: str) -> str:
+    """
+    Маскирует номер карты или счета в строке.
+
+    Args:
+        account_info: Строка с информацией о карте/счете
+
+    Returns:
+        Маскированная строка
+    """
+    if "Счет" in account_info:
+        # Маскировка счета
+        parts = account_info.split()
+        return f"{parts[0]} **{parts[1][-4:]}"
+    else:
+        # Маскировка карты
+        parts = account_info.split()
+        number = parts[-1]
+        return f"{' '.join(parts[:-1])} {number[:4]} {number[4:6]}** **** {number[-4:]}"
+
+
+def format_date(date_str: str) -> str:
+    """
+    Форматирует дату из ISO формата в DD.MM.YYYY
+
+    Args:
+        date_str: Дата в формате ISO
+
+    Returns:
+        Строка с датой в формате DD.MM.YYYY
+    """
+    try:
+        date_obj = datetime.fromisoformat(date_str)
+        return date_obj.strftime("%d.%m.%Y")
+    except ValueError:
+        return "Некорректная дата"

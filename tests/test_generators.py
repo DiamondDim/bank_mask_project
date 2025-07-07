@@ -110,3 +110,20 @@ def test_card_number_generator_large_numbers() -> None:
 def test_card_number_generator_single() -> None:
     """Тест генератора номеров карт (один номер)."""
     assert list(card_number_generator(42, 42)) == ["0000 0000 0000 0042"]
+
+
+def test_filter_by_currency_invalid_structure():
+    transactions = [{"operationAmount": "not-a-dict"}]
+    assert list(filter_by_currency(transactions, "USD")) == []
+
+
+def test_filter_by_currency_edge_cases():
+    """Тест на нестандартные структуры данных"""
+    # 1. Не словарь transaction
+    assert list(filter_by_currency([None, "not-a-dict"], "USD")) == []
+
+    # 2. Некорректный operationAmount
+    assert list(filter_by_currency([{"operationAmount": None}], "USD")) == []
+
+    # 3. Некорректный currency
+    assert list(filter_by_currency([{"operationAmount": {"currency": "not-a-dict"}}], "USD")) == []
