@@ -1,6 +1,8 @@
+from typing import Any, Dict, List
+
 import pytest
-from typing import List, Dict, Any
-from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
+
+from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 
 
 @pytest.fixture
@@ -9,35 +11,23 @@ def sample_transactions() -> List[Dict[str, Any]]:
     return [
         {
             "id": 1,
-            "operationAmount": {
-                "amount": "100.00",
-                "currency": {"code": "USD", "name": "US Dollar"}
-            },
-            "description": "Payment 1"
+            "operationAmount": {"amount": "100.00", "currency": {"code": "USD", "name": "US Dollar"}},
+            "description": "Payment 1",
         },
         {
             "id": 2,
-            "operationAmount": {
-                "amount": "200.00",
-                "currency": {"code": "EUR", "name": "Euro"}
-            },
-            "description": "Payment 2"
+            "operationAmount": {"amount": "200.00", "currency": {"code": "EUR", "name": "Euro"}},
+            "description": "Payment 2",
         },
         {
             "id": 3,
-            "operationAmount": {
-                "amount": "300.00",
-                "currency": {"code": "USD", "name": "US Dollar"}
-            },
-            "description": "Payment 3"
+            "operationAmount": {"amount": "300.00", "currency": {"code": "USD", "name": "US Dollar"}},
+            "description": "Payment 3",
         },
         {
             "id": 4,
-            "operationAmount": {
-                "amount": "400.00",
-                "currency": {"code": "GBP", "name": "Pound Sterling"}
-            },
-            "description": "Payment 4"
+            "operationAmount": {"amount": "400.00", "currency": {"code": "GBP", "name": "Pound Sterling"}},
+            "description": "Payment 4",
         },
     ]
 
@@ -91,7 +81,7 @@ def test_card_number_generator_basic() -> None:
         "0000 0000 0000 0002",
         "0000 0000 0000 0003",
         "0000 0000 0000 0004",
-        "0000 0000 0000 0005"
+        "0000 0000 0000 0005",
     ]
 
 
@@ -103,7 +93,7 @@ def test_card_number_generator_large_numbers() -> None:
         "9999 9999 9999 9996",
         "9999 9999 9999 9997",
         "9999 9999 9999 9998",
-        "9999 9999 9999 9999"
+        "9999 9999 9999 9999",
     ]
 
 
@@ -112,12 +102,12 @@ def test_card_number_generator_single() -> None:
     assert list(card_number_generator(42, 42)) == ["0000 0000 0000 0042"]
 
 
-def test_filter_by_currency_invalid_structure():
+def test_filter_by_currency_invalid_structure() -> None:
     transactions = [{"operationAmount": "not-a-dict"}]
     assert list(filter_by_currency(transactions, "USD")) == []
 
 
-def test_filter_by_currency_edge_cases():
+def test_filter_by_currency_edge_cases() -> None:
     """Тест на нестандартные структуры данных"""
     # 1. Не словарь transaction
     assert list(filter_by_currency([None, "not-a-dict"], "USD")) == []
@@ -129,7 +119,7 @@ def test_filter_by_currency_edge_cases():
     assert list(filter_by_currency([{"operationAmount": {"currency": "not-a-dict"}}], "USD")) == []
 
 
-def test_filter_by_currency_invalid_data():
+def test_filter_by_currency_invalid_data() -> None:
     assert list(filter_by_currency([None, "string"], "USD")) == []
     assert list(filter_by_currency([{"operationAmount": None}], "USD")) == []
     assert list(filter_by_currency([{"operationAmount": {}}], "USD")) == []

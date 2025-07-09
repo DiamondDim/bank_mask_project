@@ -1,4 +1,4 @@
-from typing import Iterator, Dict, List, Any, Optional
+from typing import Any, Dict, Iterator, List
 
 
 def filter_by_currency(transactions: List[Dict[str, Any]], currency: str) -> Iterator[Dict[str, Any]]:
@@ -21,8 +21,8 @@ def filter_by_currency(transactions: List[Dict[str, Any]], currency: str) -> Ite
             continue
 
         try:
-            op_amount = transaction.get('operationAmount', {})
-            if isinstance(op_amount, dict) and op_amount.get('currency', {}).get('code') == currency:
+            op_amount = transaction.get("operationAmount", {})
+            if isinstance(op_amount, dict) and op_amount.get("currency", {}).get("code") == currency:
                 yield transaction
         except (AttributeError, TypeError):
             continue
@@ -43,7 +43,7 @@ def transaction_descriptions(transactions: List[Dict[str, Any]]) -> Iterator[str
         ['Payment']
     """
     for transaction in transactions:
-        yield str(transaction.get('description', '')) if isinstance(transaction, dict) else ''
+        yield str(transaction.get("description", "")) if isinstance(transaction, dict) else ""
 
 
 def card_number_generator(start: int, end: int) -> Iterator[str]:

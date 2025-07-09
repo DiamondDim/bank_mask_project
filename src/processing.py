@@ -1,5 +1,4 @@
-from typing import List, Dict, Any
-from datetime import datetime
+from typing import Any, Dict, List
 
 
 def filter_by_state(transactions: List[Dict[str, Any]], state: str) -> List[Dict[str, Any]]:
@@ -17,7 +16,7 @@ def filter_by_state(transactions: List[Dict[str, Any]], state: str) -> List[Dict
         >>> filter_by_state([{"state": "EXECUTED"}], "EXECUTED")
         [{'state': 'EXECUTED'}]
     """
-    return [t for t in transactions if isinstance(t, dict) and t.get('state') == state]
+    return [t for t in transactions if isinstance(t, dict) and t.get("state") == state]
 
 
 def sort_by_date(transactions: List[Dict[str, Any]], reverse: bool = True) -> List[Dict[str, Any]]:
@@ -37,10 +36,7 @@ def sort_by_date(transactions: List[Dict[str, Any]], reverse: bool = True) -> Li
     """
 
     def get_date(transaction: Dict[str, Any]) -> str:
-        return transaction.get('date', '') if isinstance(transaction, dict) else ''
+        date = transaction.get('date', '')
+        return str(date)
 
-    return sorted(
-        [t for t in transactions if 'date' in t],
-        key=lambda x: x['date'],
-        reverse=reverse
-    )
+    return sorted([t for t in transactions if "date" in t], key=lambda x: x["date"], reverse=reverse)

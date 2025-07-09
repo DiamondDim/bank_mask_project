@@ -1,41 +1,30 @@
-from src.masks import mask_card_number, mask_account_number
+from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
+from src.masks import mask_account_number, mask_card_number
 from src.processing import filter_by_state, sort_by_date
-from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
 from src.widget import format_date
 
-def main():
+
+def main() -> None:
     # Пример данных для демонстрации
     transactions = [
         {
             "id": 939719570,
             "state": "EXECUTED",
             "date": "2018-06-30T02:08:58.425572",
-            "operationAmount": {
-                "amount": "9824.07",
-                "currency": {
-                    "name": "USD",
-                    "code": "USD"
-                }
-            },
+            "operationAmount": {"amount": "9824.07", "currency": {"name": "USD", "code": "USD"}},
             "description": "Перевод организации",
             "from": "Visa Platinum 7000792289606361",
-            "to": "Счет 11776614605963066702"
+            "to": "Счет 11776614605963066702",
         },
         {
             "id": 142264268,
             "state": "CANCELED",
             "date": "2019-04-04T23:20:05.206878",
-            "operationAmount": {
-                "amount": "79114.93",
-                "currency": {
-                    "name": "USD",
-                    "code": "USD"
-                }
-            },
+            "operationAmount": {"amount": "79114.93", "currency": {"name": "USD", "code": "USD"}},
             "description": "Перевод со счета на счет",
             "from": "Счет 19708645243227258542",
-            "to": "Счет 75651667383060284188"
-        }
+            "to": "Счет 75651667383060284188",
+        },
     ]
 
     print("=== Демонстрация работы всех функций проекта ===")
@@ -74,6 +63,7 @@ def main():
     # 4. Форматирование даты
     print("\n4. Форматирование даты:")
     print("2018-06-30T02:08:58.425572 ->", format_date("2018-06-30T02:08:58.425572"))
+
 
 if __name__ == "__main__":
     main()
