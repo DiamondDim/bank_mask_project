@@ -13,6 +13,7 @@ black = "^25.1.0"
 mypy = "^1.16.0"
 transactions = "^0.2.0"
 pytest-cov = "^6.2.1"
+decorators = "^2.0.7"
 
 [tool.poetry.group.lint.dependencies]
 flake8 = "7.2.0"

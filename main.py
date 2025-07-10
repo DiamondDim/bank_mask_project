@@ -2,6 +2,8 @@ from src.generators import card_number_generator, filter_by_currency, transactio
 from src.masks import mask_account_number, mask_card_number
 from src.processing import filter_by_state, sort_by_date
 from src.widget import format_date
+from decorators import log
+import random
 
 
 def main() -> None:
@@ -65,5 +67,70 @@ def main() -> None:
     print("2018-06-30T02:08:58.425572 ->", format_date("2018-06-30T02:08:58.425572"))
 
 
+@log()
+def calculate_interest(amount: float, rate: float, years: int) -> float:
+    """Рассчитывает сумму с учетом процентов"""
+    return amount * (1 + rate / 100) ** years
+
+
+@log(filename="bank_operations.log")
+def transfer_funds(from_account: str, to_account: str, amount: float) -> str:
+    """Имитирует перевод средств между счетами"""
+    if amount <= 0:
+        raise ValueError("Сумма перевода должна быть положительной")
+    if len(from_account) != 20 or len(to_account) != 20:
+        raise ValueError("Номер счета должен содержать 20 цифр")
+
+    # Имитация случайной ошибки (для демонстрации)
+    if random.random() < 0.3:
+        raise RuntimeError("Ошибка соединения с банковским сервером")
+
+    return f"Перевод {amount:.2f}₽ с {from_account} на {to_account} выполнен успешно"
+
+
+@log()
+def validate_account(account_number: str) -> bool:
+    """Проверяет валидность номера счета"""
+    return account_number.isdigit() and len(account_number) == 20
+
+
+def demonstrate_logging() -> None:
+    """Демонстрация работы декоратора log"""
+    print("\n=== Демонстрация логирования в консоль ===")
+
+    # Успешный вызов
+    interest = calculate_interest(100000, 7.5, 5)
+    print(f"Результат расчета процентов: {interest:.2f}₽")
+
+    # Вызов с ошибкой
+    try:
+        calculate_interest(-10000, 5, 2)
+    except ValueError as e:
+        print(f"Ожидаемая ошибка: {e}")
+
+    # Проверка счета
+    is_valid = validate_account("12345678901234567890")
+    print(f"Счет валиден: {is_valid}")
+
+    print("\n=== Демонстрация логирования в файл ===")
+    print("Логи будут записаны в файл 'bank_operations.log'")
+
+    # Успешный перевод
+    try:
+        result = transfer_funds("12345678901234567890", "09876543210987654321", 15000.50)
+        print(result)
+    except Exception as e:
+        print(f"Ошибка перевода: {e}")
+
+    # Перевод с ошибкой
+    try:
+        transfer_funds("123", "09876543210987654321", 500)
+    except Exception as e:
+        print(f"Ожидаемая ошибка: {e}")
+
+
 if __name__ == "__main__":
     main()
+    print("Демонстрация работы декоратора логирования")
+    demonstrate_logging()
+    print("\nПроверьте файл 'bank_operations.log' для просмотра записанных логов")
