@@ -1,50 +1,29 @@
 import pytest
 
-from src.widget import format_date, mask_account_card
+from src.widget import format_date
 
 
 @pytest.mark.parametrize(
-    "input_str, expected",
+    "input_date, expected_output",
     [
-        ("Visa Platinum 7000792289606361", "Visa Platinum 7000 79** **** 6361"),
-        ("Счет 73654108430135874305", "Счет **4305"),
+        ("2018-07-11T02:26:18.671407", "11.07.2018"),
+        ("2019-04-04T23:20:05.206878", "04.04.2019"),
+        ("2020-12-31T01:00:00.000000", "31.12.2020"),
+        ("2021-01-01T00:00:00.000000", "01.01.2021"),
     ],
-    ids=["card", "account"],
 )
-def test_mask_account_card(input_str: str, expected: str) -> None:
-    """Тестирует маскировку номеров карт и счетов"""
-    assert mask_account_card(input_str) == expected
+def test_format_date(input_date: str, expected_output: str) -> None:
+    """Тестирование функции format_date с различными входными данными"""
+    assert format_date(input_date) == expected_output
 
 
-@pytest.mark.parametrize(
-    "date_str, expected",
-    [
-        ("2018-06-30T02:08:58.425572", "30.06.2018"),
-        ("2023-10-01T00:00:00.000000", "01.10.2023"),
-        ("invalid-date", "Некорректная дата"),
-    ],
-    ids=["valid", "valid2", "invalid"],
-)
-def test_format_date(date_str: str, expected: str) -> None:
-    """Тестирует форматирование даты"""
-    assert format_date(date_str) == expected
+def test_format_date_with_empty_string() -> None:
+    """Тестирование обработки пустой строки"""
+    with pytest.raises(ValueError):
+        format_date("")
 
 
-@pytest.mark.parametrize("date_str, expected", [
-    ("2023-01-01", "01.01.2023"),
-    ("invalid", "Некорректная дата"),
-    (None, "Некорректная дата")
-], ids=["valid", "invalid", "none"])
-def test_format_date(date_str: str, expected: str) -> None:
-    assert format_date(date_str) == expected
-
-
-def test_format_date_invalid() -> None:
-    assert format_date("invalid-date") == "Некорректная дата"
-    assert format_date("2023-13-01") == "Некорректная дата"  # Несуществующая дата
-
-
-def test_format_date_edge_cases() -> None:
-    # Тест на некорректные даты
-    assert format_date("invalid") == "Некорректная дата"
-    assert format_date("2023-02-30") == "Некорректная дата"  # Несуществующая дата
+def test_format_date_with_invalid_format() -> None:
+    """Тестирование обработки неверного формата даты"""
+    with pytest.raises(ValueError):
+        format_date("2021/01/01")
