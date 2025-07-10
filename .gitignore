@@ -204,3 +204,4 @@ HTML_Tests/*
 !HTML_Tests/*.css
 !HTML_Tests/*.png
 !HTML_Tests/*.svg
+/run_tests.bat
