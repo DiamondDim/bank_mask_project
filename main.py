@@ -16,7 +16,7 @@ def calculate_interest(amount: float, rate: float, years: int) -> float:
     return amount * (1 + rate / 100) ** years
 
 
-@log(filename="bank_operations.log")
+@log(filename="Logs/bank_operations.log")
 def process_transaction(transaction: Dict[str, Any]) -> str:
     """Обрабатывает транзакцию с логированием в файл"""
     if not transaction.get("id"):
@@ -116,7 +116,7 @@ def main() -> None:
     # 5. Демонстрация логирования
     demonstrate_logging()
 
-    print("\nПроверьте файл 'bank_operations.log' для просмотра записанных логов")
+    print("\nПроверьте файл 'Logs/bank_operations.log' для просмотра записанных логов")
 
 
 if __name__ == "__main__":
