@@ -2,7 +2,7 @@ import pytest
 from src.widget import format_date, mask_account_card
 
 
-# Тесты для format_date (оставляем без изменений)
+# Тесты для format_date
 @pytest.mark.parametrize(
     "input_date, expected_output",
     [
@@ -30,11 +30,13 @@ def test_format_date_with_invalid_format() -> None:
 @pytest.mark.parametrize(
     "input_account, expected_output",
     [
-        # Карты
+        # Карты с указанием типа
         ("Visa Platinum 7000792289606361", "Visa Platinum 7000 79** **** 6361"),
         ("Maestro 1596837868705199", "Maestro 1596 83** **** 5199"),
         ("МИР 1234567890123456", "МИР 1234 56** **** 3456"),
-        ("7000792289606361", "7000 79** **** 6361"),  # Только номер
+
+        # Только номер карты (16 цифр)
+        ("7000792289606361", "7000 79** **** 6361"),
 
         # Счета
         ("Счет 73654108430135874305", "Счет **4305"),
@@ -45,7 +47,7 @@ def test_format_date_with_invalid_format() -> None:
         ("", ""),
         ("Счет", "Счет"),
         ("Visa", "Visa"),
-        ("12345678", "12345678"),
+        ("12345678", "12345678"),  # Слишком короткий для карты
         ("Not a card or account", "Not a card or account"),
     ],
 )
@@ -53,7 +55,6 @@ def test_mask_account_card_valid(input_account: str, expected_output: str) -> No
     assert mask_account_card(input_account) == expected_output
 
 
-# Отдельный тест для некорректных типов
 def test_mask_account_card_invalid_input() -> None:
     assert mask_account_card(None) == "Некорректные данные"
     assert mask_account_card(123456) == "Некорректные данные"
