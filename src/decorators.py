@@ -1,8 +1,8 @@
 import datetime
-from typing import Callable, Any, Optional, TypeVar, cast
 from functools import wraps
+from typing import Any, Callable, Optional, TypeVar, cast
 
-T = TypeVar('T', bound=Callable[..., Any])
+T = TypeVar("T", bound=Callable[..., Any])
 
 
 def log(filename: Optional[str] = None) -> Callable[[T], T]:
@@ -22,8 +22,7 @@ def log(filename: Optional[str] = None) -> Callable[[T], T]:
             # Формируем сообщение о начале выполнения
             start_time = datetime.datetime.now()
             log_message = (
-                f"{start_time} - Вызов функции {func.__name__} с аргументами: "
-                f"args={args}, kwargs={kwargs}"
+                f"{start_time} - Вызов функции {func.__name__} с аргументами: " f"args={args}, kwargs={kwargs}"
             )
 
             try:
@@ -40,9 +39,9 @@ def log(filename: Optional[str] = None) -> Callable[[T], T]:
 
                 # Записываем или выводим сообщение
                 if filename:
-                    with open(filename, 'a', encoding='utf-8') as f:
-                        f.write(log_message + '\n')
-                        f.write(success_message + '\n')
+                    with open(filename, "a", encoding="utf-8") as f:
+                        f.write(log_message + "\n")
+                        f.write(success_message + "\n")
                 else:
                     print(log_message)
                     print(success_message)
@@ -60,9 +59,9 @@ def log(filename: Optional[str] = None) -> Callable[[T], T]:
 
                 # Записываем или выводим сообщение
                 if filename:
-                    with open(filename, 'a', encoding='utf-8') as f:
-                        f.write(log_message + '\n')
-                        f.write(error_message + '\n')
+                    with open(filename, "a", encoding="utf-8") as f:
+                        f.write(log_message + "\n")
+                        f.write(error_message + "\n")
                 else:
                     print(log_message)
                     print(error_message)

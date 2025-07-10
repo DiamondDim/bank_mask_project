@@ -1,6 +1,8 @@
-import pytest
-from src.decorators import log
 from pathlib import Path
+
+import pytest
+
+from src.decorators import log
 
 
 # Тестовая функция для проверки успешного выполнения
@@ -50,7 +52,7 @@ def test_log_decorator_file_success(tmp_path: Path) -> None:
     result = file_success_function(4, 5)
     assert result == 20
 
-    with open(log_file, 'r', encoding='utf-8') as f:
+    with open(log_file, "r", encoding="utf-8") as f:
         log_content = f.read()
         assert "Вызов функции file_success_function" in log_content
         assert "Функция file_success_function успешно выполнена" in log_content
@@ -69,7 +71,7 @@ def test_log_decorator_file_error(tmp_path: Path) -> None:
     with pytest.raises(TypeError, match="File test error"):
         file_failing_function(1, 2)
 
-    with open(log_file, 'r', encoding='utf-8') as f:
+    with open(log_file, "r", encoding="utf-8") as f:
         log_content = f.read()
         assert "Вызов функции file_failing_function" in log_content
         assert "Функция file_failing_function вызвала исключение TypeError" in log_content
