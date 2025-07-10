@@ -1,17 +1,16 @@
 from datetime import datetime
-from typing import Optional, Union
+from typing import Optional, Union, Any
 
 
-def mask_account_card(account_info: str) -> str:
+def mask_account_card(account_info: Any) -> str:
     """
     Маскирует номер карты или счета в переданной строке.
 
     Args:
-        account_info: Строка с информацией о карте/счете
-            (формат: "Visa Platinum 7000792289606361" или "Счет 73654108430135874305")
+        account_info: Может быть строкой с информацией о карте/счете или другим типом
 
     Returns:
-        Маскированная строка (формат: "Visa Platinum 7000 79** **** 6361" или "Счет **4305")
+        Маскированная строка или "Некорректные данные" для неподходящих типов
     """
     if not isinstance(account_info, str):
         return "Некорректные данные"
@@ -22,20 +21,17 @@ def mask_account_card(account_info: str) -> str:
     else:
         parts = account_info.split()
         number = parts[-1] if len(parts) > 1 else account_info
+
         if len(number) == 16 and number.isdigit():
-            return f"{' '.join(parts[:-1])} {number[:4]} {number[4:6]}** **** {number[-4:]}" if parts[:-1] else f"{number[:4]} {number[4:6]}** **** {number[-4:]}"
+            masked = f"{number[:4]} {number[4:6]}** **** {number[-4:]}"
+            return f"{' '.join(parts[:-1])} {masked}" if parts[:-1] else masked
+
         return account_info
 
 
 def format_date(date_str: Optional[Union[str, int, float]]) -> str:
     """
     Форматирует дату из ISO формата в DD.MM.YYYY.
-
-    Args:
-        date_str: Дата в формате ISO (str) или None/число для некорректных данных
-
-    Returns:
-        Отформатированная дата или вызывает ValueError при ошибке
     """
     if not isinstance(date_str, str) or not date_str.strip():
         raise ValueError("Некорректная дата")
