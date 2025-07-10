@@ -41,19 +41,20 @@ def format_date(date_str: Optional[Union[str, int, float]]) -> str:
         date_str: Дата в формате ISO (str) или None/число для некорректных данных
 
     Returns:
-        Отформатированная дата или "Некорректная дата" при ошибке
+        Отформатированная дата или вызывает ValueError при ошибке
+
+    Raises:
+        ValueError: Если входные данные некорректны
 
     Examples:
         >>> format_date("2023-01-01T12:00:00.000000")
         '01.01.2023'
-        >>> format_date(None)
-        'Некорректная дата'
     """
-    if not isinstance(date_str, str):
-        return "Некорректная дата"
+    if not isinstance(date_str, str) or not date_str.strip():
+        raise ValueError("Некорректная дата")
 
     try:
         date_obj = datetime.fromisoformat(date_str)
         return date_obj.strftime("%d.%m.%Y")
-    except (ValueError, TypeError):
-        return "Некорректная дата"
+    except ValueError:
+        raise ValueError("Некорректная дата")
