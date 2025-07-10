@@ -193,3 +193,14 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Игнорировать всё в папке HTML_Tests...
+HTML_Tests/*
+# ...но разрешить нужные файлы отчётов
+!HTML_Tests/.gitkeep
+!HTML_Tests/index.html
+!HTML_Tests/*.html
+!HTML_Tests/*.js
+!HTML_Tests/*.css
+!HTML_Tests/*.png
+!HTML_Tests/*.svg
