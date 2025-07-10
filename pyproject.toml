@@ -11,6 +11,8 @@ flake8 = "^7.2.0"
 isort = "^6.0.1"
 black = "^25.1.0"
 mypy = "^1.16.0"
+transactions = "^0.2.0"
+pytest-cov = "^6.2.1"
 
 [tool.poetry.group.lint.dependencies]
 flake8 = "7.2.0"
@@ -39,3 +41,9 @@ warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
 exclude = "venv"
+
+[tool.pytest.ini_options]
+addopts = "--cov=src --cov-report=html --cov-report=term"
+testpaths = "tests"
+python_files = "test_*.py"
+pythonpath = ["."]
