@@ -56,7 +56,7 @@ cover/
 *.pot
 
 # Django stuff:
-*.log
+#*.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -204,3 +204,4 @@ HTML_Tests/*
 !HTML_Tests/*.css
 !HTML_Tests/*.png
 !HTML_Tests/*.svg
+/run_tests.bat

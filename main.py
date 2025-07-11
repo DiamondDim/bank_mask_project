@@ -1,10 +1,59 @@
+import random
+from typing import Any, Dict
+
+from src.decorators import log
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 from src.masks import mask_account_number, mask_card_number
 from src.processing import filter_by_state, sort_by_date
 from src.widget import format_date
 
 
+@log()
+def calculate_interest(amount: float, rate: float, years: int) -> float:
+    """Рассчитывает сумму с учетом процентов (демонстрация логирования)"""
+    if amount <= 0:
+        raise ValueError("Сумма должна быть положительной")
+    return amount * (1 + rate / 100) ** years
+
+
+@log(filename="Logs/bank_operations.log")
+def process_transaction(transaction: Dict[str, Any]) -> str:
+    """Обрабатывает транзакцию с логированием в файл"""
+    if not transaction.get("id"):
+        raise ValueError("Транзакция не содержит ID")
+
+    amount = transaction.get("amount", 0)
+    currency = transaction.get("currency", "USD")
+
+    if random.random() < 0.2:
+        raise RuntimeError("Случайная ошибка обработки транзакции")
+
+    return f"Транзакция {transaction['id']} на сумму {amount} {currency} обработана"
+
+
+def demonstrate_logging() -> None:
+    """Демонстрация работы декоратора log"""
+    print("\n=== Демонстрация логирования ===")
+
+    # Логирование в консоль
+    try:
+        interest = calculate_interest(10000, 5, 3)
+        print(f"Начисленные проценты: {interest:.2f}")
+    except ValueError as e:
+        print(f"Ошибка: {e}")
+
+    # Логирование в файл
+    sample_transaction = {"id": "123456", "amount": 1500.75, "currency": "RUB", "description": "Покупка в магазине"}
+
+    try:
+        result = process_transaction(sample_transaction)
+        print(result)
+    except Exception as e:
+        print(f"Ошибка обработки транзакции: {e}")
+
+
 def main() -> None:
+    """Основная функция для демонстрации возможностей проекта"""
     # Пример данных для демонстрации
     transactions = [
         {
@@ -63,6 +112,11 @@ def main() -> None:
     # 4. Форматирование даты
     print("\n4. Форматирование даты:")
     print("2018-06-30T02:08:58.425572 ->", format_date("2018-06-30T02:08:58.425572"))
+
+    # 5. Демонстрация логирования
+    demonstrate_logging()
+
+    print("\nПроверьте файл 'Logs/bank_operations.log' для просмотра записанных логов")
 
 
 if __name__ == "__main__":
