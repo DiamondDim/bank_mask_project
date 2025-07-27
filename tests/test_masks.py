@@ -1,5 +1,3 @@
-from typing import NoReturn
-
 import pytest
 
 from src.masks import mask_account_number, mask_card_number
@@ -73,7 +71,7 @@ def test_mask_empty_input() -> None:
     return None
 
 
-def test_mask_account_edge_cases() -> NoReturn:
+def test_mask_account_edge_cases() -> None:
     """
     Тестирует обработку крайних случаев для номеров счетов.
 

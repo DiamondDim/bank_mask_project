@@ -36,7 +36,7 @@ def sort_by_date(transactions: List[Dict[str, Any]], reverse: bool = True) -> Li
     """
 
     def get_date(transaction: Dict[str, Any]) -> str:
-        date = transaction.get('date', '')
+        date = transaction.get("date", "")
         return str(date)
 
     return sorted([t for t in transactions if "date" in t], key=lambda x: x["date"], reverse=reverse)

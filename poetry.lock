@@ -58,14 +58,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "certifi"
-version = "2025.6.15"
+version = "2025.7.9"
 description = "Python package for providing Mozilla's CA Bundle."
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
 files = [
-    {file = "certifi-2025.6.15-py3-none-any.whl", hash = "sha256:2e0c7ce7cb5d8f8634ca55d2ba7e6ec2689a2fd6537d8dec1296a477a4910057"},
-    {file = "certifi-2025.6.15.tar.gz", hash = "sha256:d747aa5a8b9bbbb1bb8c22bb13e22bd1f18e9796defa16bab421f7f7a317323b"},
+    {file = "certifi-2025.7.9-py3-none-any.whl", hash = "sha256:d842783a14f8fdd646895ac26f719a061408834473cfc10203f6a575beb15d39"},
+    {file = "certifi-2025.7.9.tar.gz", hash = "sha256:c1d2ec05395148ee10cf672ffc28cd37ea0ab0d99f9cc74c43e588cbd111b079"},
 ]
 
 [[package]]
@@ -277,6 +277,17 @@ files = [
 
 [package.extras]
 toml = ["tomli ; python_full_version <= \"3.11.0a6\""]
+
+[[package]]
+name = "decorators"
+version = "2.0.7"
+description = "Quickly create flexible Python decorators"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "decorators-2.0.7.tar.gz", hash = "sha256:9cf26202d6170a5cdca8a9cf6cd4b467c10601d4a9076470bceb9d282a5fa28a"},
+]
 
 [[package]]
 name = "flake8"
@@ -654,4 +665,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "dc05af6ab67e92f83ec3c74c15fa9087f14eb8592524e644d58261da6d491316"
+content-hash = "351f497f077df6851ab29045886bf4277ac61db9b9f5eff2c27204e3572fdd82"
