@@ -1,4 +1,0 @@
-2026-05-07 21:57:36,226 | src.utils | INFO | Начинаю загрузку из: data/operations.json
-2026-05-07 21:57:36,228 | src.utils | INFO | Успешно загружено 101 операций.
-2026-05-07 21:57:36,228 | src.utils | INFO | Начинаю загрузку из: data/ghost_file.json
-2026-05-07 21:57:36,228 | src.utils | WARNING | Файл не найден: data/ghost_file.json

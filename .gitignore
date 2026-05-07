@@ -22,6 +22,7 @@ var/
 wheels/
 share/python-wheels/
 *.egg-info/
+logs/
 .installed.cfg
 *.egg
 MANIFEST
@@ -56,7 +57,7 @@ cover/
 *.pot
 
 # Django stuff:
-#*.log
+*.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
