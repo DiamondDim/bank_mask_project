@@ -51,6 +51,13 @@
    - `logs/utils.log` — загрузка операций
    - `logs/masks.log` — маскировка карт/счетов
 
+## 📄 CSV и Excel
+Проект поддерживает загрузку из `.csv` и `.xlsx`:
+```python
+from src.file_loaders import load_transactions_csv, load_transactions_excel
+data = load_transactions_csv("data/transactions.csv")
+```
+
 ## 📦 Дополнительно
 - .gitignore настроен (логи не в репозитории)
 - Все функции типизированы
