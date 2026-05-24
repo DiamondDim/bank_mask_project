@@ -1,10 +1,12 @@
 import os
 
 import requests
+import logging
 from dotenv import load_dotenv
 
 # Загружаем переменные из .env один раз при импорте
 load_dotenv()
+logger = logging.getLogger(__name__)
 
 
 def convert_currency(transaction: dict) -> float:
@@ -25,9 +27,10 @@ def convert_currency(transaction: dict) -> float:
         return amount
 
     if currency in ["USD", "EUR"]:
+        logger.info(f"🔄 Конвертирую {amount} {currency} → RUB")
         api_key = os.getenv("EXCHANGE_API_KEY")
         if not api_key:
-            print("EXCHANGE_API_KEY не найден в .env")
+            print("⚠️ Ключ API не найден в .env")
             return amount
 
         try:
@@ -40,11 +43,13 @@ def convert_currency(transaction: dict) -> float:
 
             data = response.json()
             rate = data.get("rates", {}).get("RUB")
+            logger.info(f"✅ Курс получен: 1 {currency} = {rate} RUB")
 
             if rate:
                 return round(amount * rate, 2)
 
         except requests.exceptions.RequestException as e:
-            print(f"Ошибка запроса к API: {e}")
+            logger.error(f"❌ Ошибка API: {e}")
 
     return amount
+
