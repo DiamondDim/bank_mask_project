@@ -58,6 +58,11 @@ from src.file_loaders import load_transactions_csv, load_transactions_excel
 data = load_transactions_csv("data/transactions.csv")
 ```
 
+## 🔍 Обработка операций (13.2)
+- `process_bank_search()` — поиск по описанию через `re`
+- `process_bank_operations()` — подсчёт категорий через `collections.Counter`
+- CLI-интерфейс в `main.py`: фильтрация по статусу, дате, валюте и ключевому слову.
+
 ## 📦 Дополнительно
 - .gitignore настроен (логи не в репозитории)
 - Все функции типизированы
