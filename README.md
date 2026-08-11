@@ -2,6 +2,8 @@
 
 Простая программа для скрытия номеров карт и счетов.
 
+![bank_mask_project](logo.png)
+
 ## **_Как использовать_**
 
 1. [Скачайте программу](https://github.com/DiamondDim/bank_mask_project/archive/main.zip)
